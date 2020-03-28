@@ -104,6 +104,8 @@ public class UploadServlet extends HttpServlet {
                 //isi array kalo pake arff: path/TestFile,path/TrainFile
                 String input = path+"/"+ls.get(1)+","+path+"/"+ls.get(0);
                 res.addAll(ls);
+            }else{
+                out.print("Tipe file tidak sesuai");
             }
             
             for(String a: res){
