@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Netcen_tubes</title>
+    </head>
+    <body>
+        <center>
+            <h1>Auto ML using Naive Bayes</h1>
+        </center><br/>
+            
+        <form action="netcen" method="post" name="form1" enctype="multipart/form-data">
+            <center>
+                <table>
+                    <tr>
+                        <td align="center"><b>Upload file (csv or arff only)</b></td>
+                        <td align="center">Gunakan data yang sudah dilakukan filtering</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Data test: <input name="test" type="file" id="fileTest">
+                        </td>
+                        <td>
+                            Data train: <input name="train" type="file" id="fileTrain">
+                        </td>
+                        <td>
+                            <input type="submit" name="Submit" value="Submit Files">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="center">Hasil</td>
+                        <td align="center" id="hasil"></td>
+                    </tr>
+                </table>
+            </center>
+        </form>
+        
+    </body>
+</html>

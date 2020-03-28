@@ -12,20 +12,25 @@ import java.util.Scanner;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-//import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.io.FilenameUtils;
-//import org.apache.tomcat.util.buf.StringUtils;
 import weka.classifiers.bayes.NaiveBayes;
-//import weka.core.Attribute;
 import weka.core.Instance;
 import weka.core.Instances;
 import weka.core.converters.*;
-//import weka.core.converters.ArffLoader.ArffReader;
-//import weka.filters.Filter;
 
 public class weka_nBayes {
+    
+//    public weka_nBayes(String input){
+//        try {
+//            mainMachine(input);            
+//        } catch (Exception ex) {
+//            Logger.getLogger(weka_nBayes.class.getName()).log(Level.SEVERE, 
+//                    null, ex);
+//        }
+//    }
+    
     public static String setQuestionMark(String path, String filename) 
     throws FileNotFoundException, IOException{
         
@@ -63,6 +68,7 @@ public class weka_nBayes {
                 idx_selisih--;
             }
             
+            //hapus [ dan ] karna pake list.toString
             bw.write(list.toString().substring(1, 
                 list.toString().length()-1)+"\n");
         }   
@@ -96,18 +102,19 @@ public class weka_nBayes {
         BufferedReader reader = null;
         reader = new BufferedReader(new FileReader(fileName));
         
-        Instances data = new Instances (reader);
+        Instances data = new Instances (reader);      
         data.setClassIndex(data.numAttributes() - 1);
         
         reader.close();
         return data;
     }
     
-    public static void Bayes(Instances trainingDataSet, Instances testDataSet) 
+    public static ArrayList<String> Bayes(Instances trainingDataSet, Instances testDataSet) 
     throws Exception {
         
         NaiveBayes naiveB = new NaiveBayes();
         naiveB.buildClassifier(trainingDataSet);
+        ArrayList<String> ls = new ArrayList<String>(); 
         
         System.out.println("============ Hasil prediksi =============");
 //        Attribute test = testDataSet.instance(i);
@@ -120,23 +127,29 @@ public class weka_nBayes {
 //            System.out.println(predNb);
             double id = test.value(test.attribute(0));
             String pred = trainingDataSet.classAttribute().value((int) predNb);
-            System.out.println((int) id +": "+pred);
+            String[] tmp = ((int) id +" "+pred).split(" ");
+            ls.add(Arrays.toString(tmp));
+//            System.out.println((int) id +": "+pred);
         }
+        return ls;
 //        System.out.println(i);
     }
     
-    public static void mainMachine() throws Exception{
-        Scanner in = new Scanner(System.in);
-        System.out.println("Masukkan path,<sourceTest>.csv,<DestTest>.arff"
-                + ",<sourceTrain>.csv"
-                + ",<destTrain>.arff jika tipe data csv");
-        System.out.println("Masukkan path/<testData>.arff"
-                + ",path/<trainData>.arff jika tipe file arff");
+    public static ArrayList<String> getResult(String input) throws Exception{
         
-        String a = in.nextLine();
+        ArrayList<String> tmp = new ArrayList<String>();
+//        Scanner in = new Scanner(System.in);
+//        System.out.println("Masukkan path,<sourceTest>.csv,<DestTest>.arff"
+//                + ",<sourceTrain>.csv"
+//                + ",<destTrain>.arff jika tipe data csv");
+//        System.out.println("Masukkan path/<testData>.arff"
+//                + ",path/<trainData>.arff jika tipe file arff");
+//        
+//        String a = in.nextLine();
+
         //isi array kalo csv: path,sourceTest,DestTest,sourceTrain,destTrain
         //isi array kalo pake arff: path/SourceFile,path/DestFile
-        String[] s = a.split(",");
+        String[] s = input.split(",");
         
         Instances testData;
         Instances trainData;
@@ -158,9 +171,14 @@ public class weka_nBayes {
                     testData = getDataSet(Convert(s[0] ,
                             setQuestionMark(s[0],s[1]) , s[2]));
                     trainData = getDataSet(Convert(s[0],s[3],s[4]));
-                    Bayes(trainData, testData);
+                    tmp = Bayes(trainData, testData);
+                    
+//                    for(String b: tmp){
+//                        System.out.println(b.replaceAll(",", ":").substring(1, b.length()-1));
+//                    }
+//                    Bayes(trainData, testData);
                 } else {
-                    System.out.println("tipe file tidak sesuai");
+                    tmp.add("tipe file tidak sesuai");
                 }   
                 break;
                 
@@ -176,23 +194,29 @@ public class weka_nBayes {
                 if(tipeFile) {
                     testData = getDataSet(s[0]);
                     trainData = getDataSet(s[1]);
-                    Bayes(trainData, testData);
+                    tmp = Bayes(trainData, testData);
+                    
+//                    for(String b: tmp){
+//                        System.out.println(b.replaceAll(",", ":").substring(1, b.length()-1));
+//                    }
                 } else {
-                    System.out.println("tipe file tidak sesuai");
+                    tmp.add("tipe file tidak sesuai");
                 }
                 break;
             default:
-                System.out.println("File kurang atau lebih");
+                tmp.add("File kurang atau lebih");
                 break;
-        }        
+        }   
+        
+        return tmp;
     }
     
-    public static void main(String[] args) {
-        try {
-            mainMachine();            
-        } catch (Exception ex) {
-            Logger.getLogger(weka_nBayes.class.getName()).log(Level.SEVERE, 
-                    null, ex);
-        }
-    }
+//    public static void main(String[] args) {
+//        try {
+//            mainMachine();            
+//        } catch (Exception ex) {
+//            Logger.getLogger(weka_nBayes.class.getName()).log(Level.SEVERE, 
+//                    null, ex);
+//        }
+//    }
 }
