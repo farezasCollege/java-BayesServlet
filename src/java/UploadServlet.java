@@ -75,7 +75,7 @@ public class UploadServlet extends HttpServlet {
 //        out.println("hello sayang");
         ArrayList<String> ls = new ArrayList<>();
         ArrayList<String> res = new ArrayList<>();
-        String path = "D:/[c] Pelajaran/Semester 6/Netcentric/tubes/tes_upload";
+        String path = "/usr/local/tomcat9/webapps/netcen/tes_upload";
         File upload = new File(path);
         MultipartRequest m1;
         try{
@@ -103,13 +103,13 @@ public class UploadServlet extends HttpServlet {
                 
                 //isi array kalo pake arff: path/TestFile,path/TrainFile
                 String input = path+"/"+ls.get(1)+","+path+"/"+ls.get(0);
-                res.addAll(ls);
+                res.addAll(weka_nBayes.getResult(input));
             }else{
                 out.print("Tipe file tidak sesuai");
             }
             
             for(String a: res){
-                out.println(a+"<br/>");
+                out.println(a.substring(1, a.length()-2)+"<br/>");
             }
             
         }catch(IOException e){
