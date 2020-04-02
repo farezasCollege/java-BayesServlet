@@ -113,10 +113,11 @@ public class UploadServlet extends HttpServlet {
             }
             
         }catch(IOException e){
-            out.println("Upload file gagal, mungkin terjadi error");
-//            out.println(e);
+//            out.println("Upload file gagal, mungkin terjadi error");
+            out.println(e);
         } catch (Exception ex) {
             Logger.getLogger(UploadServlet.class.getName()).log(Level.SEVERE, null, ex);
+            out.println(ex);
         }
      
     }
